@@ -1,5 +1,4 @@
 Mason Prosser
-I worked alone on this project.
 
 For my final project, I recreated the classic arcade game Tetris. As rows are
 cleared, the game gets progressively faster, and the game ends when a new
@@ -29,3 +28,7 @@ rotate.
 	 a new block
 
 [Q]: The q key can be pressed at any time to quit the game
+
+
+To run:
+	final
