@@ -1,0 +1,4 @@
+To do:
+- Make sure speed actually increases as lines are cleared
+- Add a score and level display
+- Add pause function
