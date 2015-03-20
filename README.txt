@@ -30,5 +30,11 @@ rotate.
 [Q]: The q key can be pressed at any time to quit the game
 
 
+To make (currently unnecessary, as I have provided the executable):
+	make
 To run:
 	final
+
+Other notes:
+The gfx3.c and gfx3.h files were provided by the instructors for students to
+use.
