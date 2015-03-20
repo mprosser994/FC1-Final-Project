@@ -1,0 +1,120 @@
+Mason Prosser
+
+From the user's perspective, this program emulates the classic arcade game,
+Tetris. The user can use the arrow keys to move a block, use the 'z' and 'x'
+keys to rotate a block, and the space key to push a block to the bottom.
+
+From the programmer's perspective, the program utilizes many functions that
+interact with each other to accomplish this. The playing board is a 2D array
+of characters, and the active block that is falling down the screen is stored
+in a struct that holds its location, numerical type, and the letter type that
+is placed on the board.
+
+- The main function opens the graphics window, calls the startup funcion, and,
+once the user has indicated they are ready to play, calls the play function 
+until the user quits.
+
+- The startup function displays a message for the user with the gfx_text 
+function, asking them to press space to start the game.
+
+- The play function initializes the board using the makeboard function, 
+generates a new block using the maketetr function, and uses a while loop that 
+runs until the game ends. In this while loop, the board is displayed using the
+display function, and another while loop advances the board by incrementing a 
+variable t, checking to see if a key has been pressed at each iteration of the 
+loop. The loop calls other functions (rotate, move, tobottom) depending on what 
+key has been pressed. This loop is broken when t reaches tmax, and t is reset 
+to 0. Then the block is advanced using the advance function, and if the advance 
+function returns 1, then the block is placed, and two functions are run: 
+isrowfull, which checks if any rows have been cleared and calls the rowclear 
+function as necessary, and the maketetr function. Then, the while loop is 
+repeated. If the loop is exited (when the function isgameover returns 1), the
+loop is exited and the gameover function displays the 'Game Over' screen, which
+lets the user decide to either play again or quit.
+
+- The maketetr function generates a new block, checks if it can be placed on the
+board, and, if it can be placed, places it. The block is generated using a time-
+seeded rand function, and then the isgameover function is called to make sure
+the block can be placed. If not, the function returns 1, and the play function
+exits its loop. If the game is not over, the maketetr function uses a switch
+to determine what type of block to make and edits the struct and board
+accordingly.
+
+- The makeboard function uses for loops to define each element of the 2D char
+array as a space.
+
+- The display function flushes output to the graphics window, then clears it.
+Then, the borders of the playing board are drawn using the gfx_rectangle
+function. The board itself is drawn using for loops that check each element
+of the board and, if there is an element of a block in that space, draw a square
+of the appropriate color (which is chosen by the choosecolor function) in the
+corresponding space in the graphics window. These squares are all filled, and
+because borders can't be seen, a grid is drawn on top of the playing board using
+for loops. Then, the function flushes output to the graphics window.
+
+- The choosecolor function checks the letter of the current element of the
+array, and uses a switch to determine what RGB values correspond to that letter.
+I determined these colors using an online color wheel.
+
+- The move function sets up temporary variables that hold the locations of each
+element of the active block, then uses a switch to determine which way the block
+should be moved. In each case, the function checks to see if the block's new
+position would push any of the elements past the edge of the board, then checks
+if the new position of any element is already occupied by a block that has 
+already been placed. (The function makes sure that each element is only compared
+to elements that are not part of the active block by checking the new position
+of each element to the current position of every other element.) If it is 
+possible to move the block, the struct is modified to the block's new position.
+The spaces where the block used to be are changed to spaces, the temporary
+variables are changed to the block's new position, and the elements' new 
+positions are filled in the board. Then the board is displayed using the
+display function.
+
+- The rotate function operates in a similar way. It sets up temporary variables
+to store the location of each element in the active block, finds each element's
+displacement from the 'center element', which is the third element in the
+struct, then uses a switch to determine which way the block is to be rotated. In
+each case, each element's new position is checked to make sure it isn't already
+occupied by a non-active element. If rotating the block would place an element
+past the edge of the board, the current location is cleared and the block is
+pushed away from the edge rather than rotated, and the rotate function is called
+again. If it is possible to rotate the block, it is rotated by clearing the 
+current location of the block, moving each element to its new location, and then
+filling the new positions of the elements on the board. Then the board is 
+displayed using the display function.
+
+- The tobottom function uses an empty while loop to repeatedly call the advance
+function until the active block is placed, then displays the board using the
+display function.
+
+- The isrowfull function defines a static integer x to track the number of lines
+the user has cleared, then uses for loops to check each row, starting from the
+bottom and moving towards the top. If a space is encountered, the row is 
+skipped, but if no spaces are encountered for the entire row, the rowclear 
+function is called. Since the rowclear function moves the rows above the cleared
+row down, i is incremented. Then, x is incremented. If x reaches 10, the
+function modifies the time interval between advancements of the board. Finally,
+the board is displayed using the display function.
+
+- The rowclear function clears the row that isrowfull passes as input. Then,
+starting from the cleared row and moving upward, each element on the board is
+assigned the value of the element above it using for loops. These loops end
+when the top row is reached, and the top row is cleared. Then the board is
+displayed using the display function.
+
+- The advance function stores the locations of the elements of the active block
+in temporary variables. Then, the function checks if any elements are at the
+bottom of the board. The, the space below each element is checked, and if it is
+not part of the active block, the function checks if it is occupied. If no
+spaces below the active block are filled, the element is moved down one row, the
+spaces it used to occupy are cleared, and the block's new position is put into
+the board.
+
+- The isgameover function uses a switch and for loops to check if the block type
+that maketetr is about to generate can be placed on the board without 
+overlapping with already-placed blocks.
+
+- The gameover function flushes all output to the graphics window, clears the
+window, then uses gfx_text to display the 'Game Over' message. Then the function
+waits for the user's input using a while loop, and only returns a value when
+the user presses either space to continue or q to quit.
